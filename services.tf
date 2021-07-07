@@ -21,10 +21,3 @@ resource "google_project_service" "cloudbuild-api" {
   service = "cloudbuild.googleapis.com"
   disable_on_destroy = false
 }
-
-
-# Enable Secret Manager API
-resource "google_project_service" "secretmanager-api" {
-  service = "secretmanager.googleapis.com"
-  disable_on_destroy = false
-}
