@@ -5,6 +5,7 @@ resource "google_project_service" "storage-api" {
 }
 
 # Create a Cloud Storage Bucket
+# terraform import google_storage_bucket.asset-bucket geosentry-assets
 resource "google_storage_bucket" "asset-bucket" {
   name          = "geosentry-assets"
   location      = "ASIA-SOUTH1"
