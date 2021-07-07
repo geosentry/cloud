@@ -4,5 +4,15 @@ resource "google_project_service" "artifactregistry-api" {
   disable_on_destroy = false
 }
 
-# TODO: Create the Python Format Repository
-# TODO: Create the Docker Format Repository
+# Create Docker Repository for GeoCore
+# terraform import google_artifact_registry_repository.geocore <projectID>/asia-south1/geocore
+resource "google_artifact_registry_repository" "geocore" {
+  provider = google-beta
+
+  location = "asia-south1"
+  project = var.project
+
+  repository_id = "geocore"
+  description = "geocore container repository"
+  format = "DOCKER"
+}
