@@ -9,7 +9,7 @@ resource "google_project_service" "artifactregistry-api" {
 resource "google_artifact_registry_repository" "geocore" {
   provider = google-beta
 
-  location = "asia-south1"
+  location = var.region
   project = var.project
 
   repository_id = "geocore"
