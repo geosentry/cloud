@@ -14,7 +14,7 @@ resource "google_cloudfunctions_function" "asset-create" {
     entry_point = "main"
     available_memory_mb = 512
 
-    service_account_email = format("%s@%s.iam.gserviceaccount.com", "assethandler", var.project)
+    service_account_email = "${google_service_account.assethandler.email}"
 
     event_trigger {
         event_type = "google.storage.object.finalize"
@@ -39,11 +39,11 @@ resource "google_cloudfunctions_function" "region-create" {
     entry_point = "Main"
     available_memory_mb = 256
 
-    service_account_email = format("%s@%s.iam.gserviceaccount.com", "documenthandler", var.project)
+    service_account_email = "${google_service_account.documenthandler.email}"
 
     event_trigger {
         event_type = "providers/cloud.firestore/eventTypes/document.create"
-        resource = "projects/corellian-geoid/databases/(default)/documents/regions/{region}"
+        resource = format("projects/%s/databases/(default)/documents/regions/{region}", var.project)
         failure_policy {
             retry = false
         }  
