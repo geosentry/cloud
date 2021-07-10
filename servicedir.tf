@@ -9,6 +9,7 @@ resource "google_project_service" "servicedirectory-api" {
 resource "google_service_directory_namespace" "geocore" {
   provider     = google-beta
 
+  location = var.region
   namespace_id = "geocore"
 }
 
