@@ -3,7 +3,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 3.53"
+      version = "~> 3.74"
     }
   }
 }
@@ -21,8 +21,14 @@ variable "region" {
   description = "Google Cloud Platform Deployment Region"
 }
 
-# Setup GCP Provider
+# Setup Provide for google
 provider "google" {
+  region = var.region
+  project = var.project
+}
+
+# Setup Provider for google-beta
+provider "google-beta" {
   region = var.region
   project = var.project
 }
