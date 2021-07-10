@@ -49,3 +49,60 @@ resource "google_service_directory_service" "geocore-chrono" {
     ]
   }
 }
+
+# Create Service Directory Service for GeoCore-Topo
+# terraform import google_service_directory_service.geocore-topo <regionID>/geocore/geocore-topo
+resource "google_service_directory_service" "geocore-topo" {
+  provider   = google-beta
+
+  service_id = "geocore-topo"
+  namespace  = google_service_directory_namespace.geocore.id
+
+  metadata = {
+    url = "unknown"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata
+    ]
+  }
+}
+
+# Create Service Directory Service for GeoCore-Spectral
+# terraform import google_service_directory_service.geocore-spectral <regionID>/geocore/geocore-spectral
+resource "google_service_directory_service" "geocore-spectral" {
+  provider   = google-beta
+
+  service_id = "geocore-spectral"
+  namespace  = google_service_directory_namespace.geocore.id
+
+  metadata = {
+    url = "unknown"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata
+    ]
+  }
+}
+
+# Create Service Directory Service for GeoCore-Analytics
+# terraform import google_service_directory_service.geocore-analytics <regionID>/geocore/geocore-analytics
+resource "google_service_directory_service" "geocore-analytics" {
+  provider   = google-beta
+
+  service_id = "geocore-analytics"
+  namespace  = google_service_directory_namespace.geocore.id
+
+  metadata = {
+    url = "unknown"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata
+    ]
+  }
+}
