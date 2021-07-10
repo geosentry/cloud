@@ -8,7 +8,8 @@ resource "google_project_service" "firestore-api" {
 # terraform import google_app_engine_application.app <projectID>
 resource "google_app_engine_application" "app" {
   project     = var.project
-  location_id = "asia-south1"
+  location_id = var.region
+
   database_type = "CLOUD_FIRESTORE"
 }
 
