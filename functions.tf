@@ -39,7 +39,7 @@ resource "google_cloudfunctions_function" "region-create" {
     entry_point = "Main"
     available_memory_mb = 256
 
-    service_account_email = "${google_service_account.documenthandler.email}"
+    service_account_email = "${google_service_account.invokehandler.email}"
 
     event_trigger {
         event_type = "providers/cloud.firestore/eventTypes/document.create"
@@ -47,6 +47,11 @@ resource "google_cloudfunctions_function" "region-create" {
         failure_policy {
             retry = false
         }  
+    }
+
+    environment_variables = {
+        GCP_PROJECT = var.project
+        GCP_REGION = var.region
     }
 
     labels = {
