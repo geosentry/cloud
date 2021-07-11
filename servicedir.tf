@@ -22,13 +22,7 @@ resource "google_service_directory_service" "geocore-spatio" {
   namespace  = google_service_directory_namespace.geocore.id
 
   metadata = {
-    url = "unknown"
-  }
-
-  lifecycle {
-    ignore_changes = [
-      metadata
-    ]
+    url = "${google_cloud_run_service.geocore-spatio.status[0].url}"
   }
 }
 
@@ -41,13 +35,7 @@ resource "google_service_directory_service" "geocore-chrono" {
   namespace  = google_service_directory_namespace.geocore.id
 
   metadata = {
-    url = "unknown"
-  }
-
-  lifecycle {
-    ignore_changes = [
-      metadata
-    ]
+    url = "${google_cloud_run_service.geocore-chrono.status[0].url}"
   }
 }
 
@@ -60,13 +48,7 @@ resource "google_service_directory_service" "geocore-topo" {
   namespace  = google_service_directory_namespace.geocore.id
 
   metadata = {
-    url = "unknown"
-  }
-
-  lifecycle {
-    ignore_changes = [
-      metadata
-    ]
+    url = "${google_cloud_run_service.geocore-topo.status[0].url}"
   }
 }
 
@@ -79,13 +61,7 @@ resource "google_service_directory_service" "geocore-spectral" {
   namespace  = google_service_directory_namespace.geocore.id
 
   metadata = {
-    url = "unknown"
-  }
-
-  lifecycle {
-    ignore_changes = [
-      metadata
-    ]
+    url = "${google_cloud_run_service.geocore-spectral.status[0].url}"
   }
 }
 
@@ -98,12 +74,6 @@ resource "google_service_directory_service" "geocore-analytics" {
   namespace  = google_service_directory_namespace.geocore.id
 
   metadata = {
-    url = "unknown"
-  }
-
-  lifecycle {
-    ignore_changes = [
-      metadata
-    ]
+    url = "${google_cloud_run_service.geocore-analytics.status[0].url}"
   }
 }
