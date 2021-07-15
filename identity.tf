@@ -28,20 +28,36 @@ resource "google_service_account" "invokehandler" {
   description = "Invocation Handler Service Account"
 }
 
-# Create Service Account for GeoCore Services
-# terraform import google_service_account.geocore projects/<project>/serviceAccounts/geocore@<project>.iam.gserviceaccount.com
-resource "google_service_account" "geocore" {
-  account_id   = "geocore"
-  display_name = "geocore"
-  description = "GeoCore Service Account"
+# Create Service Account for the GeoCore Spatio service
+# terraform import google_service_account.geocore-spatio projects/<project>/serviceAccounts/geocore-spatio@<project>.iam.gserviceaccount.com
+resource "google_service_account" "geocore-spatio" {
+  account_id   = "geocore-spatio"
+  display_name = "geocore-spatio"
+  description = "GeoCore Spatio Service Account"
 }
 
-# Create Service Account for Earth Engine
-# terraform import google_service_account.earthengineone projects/<project>/serviceAccounts/earthengineone@<project>.iam.gserviceaccount.com
-resource "google_service_account" "earthengineone" {
-  account_id   = "earthengineone"
-  display_name = "earthengineone"
-  description = "Earth Engine Service Account"
+# Create Service Account for GeoCore Chrono service
+# terraform import google_service_account.geocore-chrono projects/<project>/serviceAccounts/geocore-chrono@<project>.iam.gserviceaccount.com
+resource "google_service_account" "geocore-chrono" {
+  account_id   = "geocore-chrono"
+  display_name = "geocore-chrono"
+  description = "GeoCore Chrono Service Account"
+}
+
+# Create Service Account for GeoCore Raster service
+# terraform import google_service_account.geocore-raster projects/<project>/serviceAccounts/geocore-raster@<project>.iam.gserviceaccount.com
+resource "google_service_account" "geocore-raster" {
+  account_id   = "geocore-raster"
+  display_name = "geocore-raster"
+  description = "GeoCore Raster Service Account"
+}
+
+# Create Service Account for GeoCore Vector service
+# terraform import google_service_account.geocore-vector projects/<project>/serviceAccounts/geocore-vector@<project>.iam.gserviceaccount.com
+resource "google_service_account" "geocore-vector" {
+  account_id   = "geocore-vector"
+  display_name = "geocore-vector"
+  description = "GeoCore Vector Service Account"
 }
 
 # Create an IAM Project Binding for the datastore.user role
@@ -53,7 +69,7 @@ resource "google_project_iam_binding" "datastore-user" {
     "serviceAccount:${google_service_account.documenthandler.email}",
     "serviceAccount:${google_service_account.assethandler.email}",
     "serviceAccount:${google_service_account.invokehandler.email}",
-    "serviceAccount:${google_service_account.geocore.email}",
+    "serviceAccount:${google_service_account.geocore-vector.email}",
   ]
 }
 
@@ -75,17 +91,7 @@ resource "google_project_iam_binding" "storage-objectadmin" {
 
   members = [
     "serviceAccount:${google_service_account.assethandler.email}",
-    "serviceAccount:${google_service_account.earthengineone.email}",
-  ]
-}
-
-# Create an IAM Project Binding for the secretmanager.secretAccessor role
-resource "google_project_iam_binding" "secretmanager-accessor" {
-  project = var.project
-  role    = "roles/secretmanager.secretAccessor"
-
-  members = [
-    "serviceAccount:${google_service_account.geocore.email}",
+    "serviceAccount:${google_service_account.geocore-raster.email}",
   ]
 }
 
@@ -106,5 +112,26 @@ resource "google_project_iam_binding" "servicedirectory-viewer" {
 
   members = [
     "serviceAccount:${google_service_account.invokehandler.email}",
+  ]
+}
+
+# Create an IAM Project Binding for the cloudtasks.enqueuer role
+resource "google_project_iam_binding" "cloudtasks-enqueuer" {
+  project = var.project
+  role    = "roles/cloudtasks.enqueuer"
+
+  members = [
+    "serviceAccount:${google_service_account.invokehandler.email}",
+  ]
+}
+
+# Create an IAM Project Binding for the earthengine.admin role
+resource "google_project_iam_binding" "earthengine-admin" {
+  project = var.project
+  role    = "roles/earthengine.admin"
+
+  members = [
+    "serviceAccount:${google_service_account.geocore-vector.email}",
+    "serviceAccount:${google_service_account.geocore-raster.email}",
   ]
 }
