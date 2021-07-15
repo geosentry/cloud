@@ -10,6 +10,13 @@ variable "geocore_version" {
   description = "GeoCore Version Tag"
 }
 
+# Setup Variable for GCP Project ID
+variable "maps_apikey" {
+  type        = string
+  description = "Google Maps Platform API Key"
+  sensitive = true
+}
+
 # Configure Cloud Run Service geocore-spatio. Assumes container image is already deployed
 # terraform import google_cloud_run_service.geocore-spatio <region>/geocore-spatio
 resource "google_cloud_run_service" "geocore-spatio" {
@@ -18,10 +25,10 @@ resource "google_cloud_run_service" "geocore-spatio" {
 
   template {
     spec {
-      container_concurrency = 20
+      container_concurrency = 5
       timeout_seconds = 60
 
-      service_account_name  = "${google_service_account.geocore.email}"
+      service_account_name  = "${google_service_account.geocore-spatio.email}"
 
       containers {
         args = []
@@ -36,6 +43,11 @@ resource "google_cloud_run_service" "geocore-spatio" {
         env {
           name = "GCP_REGION"
           value = var.region
+        }
+
+        env {
+          name = "MAPS_APIKEY"
+          value = var.maps_apikey
         }
       }
     }
@@ -56,10 +68,10 @@ resource "google_cloud_run_service" "geocore-chrono" {
 
   template {
     spec {
-      container_concurrency = 20
+      container_concurrency = 5
       timeout_seconds = 60
 
-      service_account_name  = "${google_service_account.geocore.email}"
+      service_account_name  = "${google_service_account.geocore-chrono.email}"
 
       containers {
         args = []
@@ -75,119 +87,10 @@ resource "google_cloud_run_service" "geocore-chrono" {
           name = "GCP_REGION"
           value = var.region
         }
-      }
-    }
-  }
-
-  lifecycle {
-    ignore_changes = [
-      template[0].metadata
-    ]
-  }
-}
-
-# Configure Cloud Run Service geocore-topo. Assumes container image is already deployed
-# terraform import google_cloud_run_service.geocore-topo <region>/geocore-topo
-resource "google_cloud_run_service" "geocore-topo" {
-  name     = "geocore-topo"
-  location = var.region
-
-  template {
-    spec {
-      container_concurrency = 20
-      timeout_seconds = 60
-
-      service_account_name  = "${google_service_account.geocore.email}"
-
-      containers {
-        args = []
-        command = []
-        image = format("%s-docker.pkg.dev/%s/geocore/geocore-topo:%s", var.region, var.project, var.geocore_version)
 
         env {
-          name = "GCP_PROJECT"
-          value = var.project
-        }
-
-        env {
-          name = "GCP_REGION"
-          value = var.region
-        }
-      }
-    }
-  }
-
-  lifecycle {
-    ignore_changes = [
-      template[0].metadata
-    ]
-  }
-}
-
-# Configure Cloud Run Service geocore-spectral. Assumes container image is already deployed
-# terraform import google_cloud_run_service.geocore-spectral <region>/geocore-spectral
-resource "google_cloud_run_service" "geocore-spectral" {
-  name     = "geocore-spectral"
-  location = var.region
-
-  template {
-    spec {
-      container_concurrency = 20
-      timeout_seconds = 60
-
-      service_account_name  = "${google_service_account.geocore.email}"
-
-      containers {
-        args = []
-        command = []
-        image = format("%s-docker.pkg.dev/%s/geocore/geocore-spectral:%s", var.region, var.project, var.geocore_version)
-
-        env {
-          name = "GCP_PROJECT"
-          value = var.project
-        }
-
-        env {
-          name = "GCP_REGION"
-          value = var.region
-        }
-      }
-    }
-  }
-
-  lifecycle {
-    ignore_changes = [
-      template[0].metadata
-    ]
-  }
-}
-
-# Configure Cloud Run Service geocore-analytics. Assumes container image is already deployed
-# terraform import google_cloud_run_service.geocore-analytics <region>/geocore-analytics
-resource "google_cloud_run_service" "geocore-analytics" {
-  name     = "geocore-analytics"
-  location = var.region
-
-  template {
-    spec {
-      container_concurrency = 20
-      timeout_seconds = 60
-
-      service_account_name  = "${google_service_account.geocore.email}"
-
-      containers {
-        args = []
-        command = []
-        image = format("%s-docker.pkg.dev/%s/geocore/geocore-analytics:%s", var.region, var.project, var.geocore_version)
-
-        env {
-          name = "GCP_PROJECT"
-          value = var.project
-        }
-
-        env {
-          name = "GCP_REGION"
-          value = var.region
+          name = "MAPS_APIKEY"
+          value = var.maps_apikey
         }
       }
     }
