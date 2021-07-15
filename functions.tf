@@ -8,7 +8,7 @@ resource "google_project_service" "cloudfunctions-api" {
 # terraform import google_cloudfunctions_function.asset-create asset-create
 resource "google_cloudfunctions_function" "asset-create" {
     name = "asset-create"
-    description = "A function handles new asset object creations from a GCS bucket"
+    # description = "A function handles new asset object creations from a GCS bucket"
 
     runtime = "python39"
     entry_point = "main"
@@ -33,7 +33,7 @@ resource "google_cloudfunctions_function" "asset-create" {
 # terraform import google_cloudfunctions_function.region-create region-create
 resource "google_cloudfunctions_function" "region-create" {
     name = "region-create"
-    description = "A function handles new region document creations from Firestore"
+    # description = "A function handles new region document creations from Firestore"
 
     runtime = "go113"
     entry_point = "Main"
