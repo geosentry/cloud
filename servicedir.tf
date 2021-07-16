@@ -38,3 +38,16 @@ resource "google_service_directory_service" "geocore-chrono" {
     url = "${google_cloud_run_service.geocore-chrono.status[0].url}"
   }
 }
+
+# Create Service Directory Service for GeoCore-Raster
+# terraform import google_service_directory_service.geocore-raster <regionID>/geocore/geocore-raster
+resource "google_service_directory_service" "geocore-raster" {
+  provider   = google-beta
+
+  service_id = "geocore-raster"
+  namespace  = google_service_directory_namespace.geocore.id
+
+  metadata = {
+    url = "${google_cloud_run_service.geocore-raster.status[0].url}"
+  }
+}
