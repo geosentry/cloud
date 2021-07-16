@@ -102,3 +102,46 @@ resource "google_cloud_run_service" "geocore-chrono" {
     ]
   }
 }
+
+# Configure Cloud Run Service geocore-raster. Assumes container image is already deployed
+# terraform import google_cloud_run_service.geocore-raster <region>/geocore-raster
+resource "google_cloud_run_service" "geocore-raster" {
+  name     = "geocore-raster"
+  location = var.region
+
+  template {
+    spec {
+      container_concurrency = 5
+      timeout_seconds = 60
+
+      service_account_name  = "${google_service_account.geocore-raster.email}"
+
+      containers {
+        args = []
+        command = []
+        image = format("%s-docker.pkg.dev/%s/geocore/geocore-raster:%s", var.region, var.project, var.geocore_version)
+
+        env {
+          name = "GCP_PROJECT"
+          value = var.project
+        }
+
+        env {
+          name = "GCP_REGION"
+          value = var.region
+        }
+
+        env {
+          name = "MAPS_APIKEY"
+          value = var.maps_apikey
+        }
+      }
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      template[0].metadata
+    ]
+  }
+}
