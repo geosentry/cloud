@@ -135,3 +135,15 @@ resource "google_project_iam_binding" "earthengine-admin" {
     "serviceAccount:${google_service_account.geocore-raster.email}",
   ]
 }
+
+# Create an IAM Project Binding for the serviceusage.serviceUsageConsumer role
+resource "google_project_iam_binding" "serviceusage-consumer" {
+  project = var.project
+  role    = "roles/serviceusage.serviceUsageConsumer"
+
+  members = [
+    "serviceAccount:${google_service_account.geocore-vector.email}",
+    "serviceAccount:${google_service_account.geocore-raster.email}",
+    "serviceAccount:${google_service_account.geocore-chrono.email}",
+  ]
+}
